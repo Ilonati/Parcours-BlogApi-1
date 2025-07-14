@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-// Fonctions utilitaires pour lire/écrire des fichiers JSON à placer ici
+// Fonctions utilitaires  lire/écrire des fichiers JSON 
 
 // Test de démarrage
 app.get('/', (req, res) => {
@@ -25,10 +25,10 @@ const fs = require('fs');
 const app = express();
 const port = 3000;
 
-// Middleware pour parser le corps des requêtes en JSON
+// Middleware  parser le corps des requêtes en JSON
 app.use(express.json());
 
-// Fonctions utilitaires pour lire et écrire dans les fichiers JSON
+// Fonctions utilitaires  lire et écrire dans les fichiers JSON
 const readJson = (path) => {
   const raw = fs.readFileSync(path, 'utf-8');
   return JSON.parse(raw);
@@ -38,18 +38,18 @@ const writeJson = (path, data) => {
   fs.writeFileSync(path, JSON.stringify(data, null, 2));
 };
 
-// Fonction pour afficher le contenu d'un fichier JSON dans la console
+// Fonction  afficher le contenu d'un fichier JSON dans la console
 const afficherFichier = (chemin) => {
   const contenu = readJson(chemin);
   console.log(contenu);
 };
 
-// c'est pour éviter le Cannot GET quand j'ouvre le localhoost sur internet
+//  éviter le Cannot GET quand j'ouvre le localhoost sur internet
 app.get('/', (req, res) => {
   res.send('Bienvenue sur l\'API Blog !');
 });
 
-// pour lister tous les articles
+//  lister tous les articles
 app.get('/posts', (req, res) => {
   try {
     const posts = readJson('./data/posts.json');
@@ -59,7 +59,7 @@ app.get('/posts', (req, res) => {
   }
 });
 
-// pour afficher un article au choix
+//  afficher un article au choix
 app.get('/posts/:id', (req, res) => {
   try {
     const posts = readJson('./data/posts.json');
@@ -74,7 +74,7 @@ app.get('/posts/:id', (req, res) => {
   }
 });
 
-// pour créer un nouvel article
+//  créer un nouvel article
 app.post('/posts', (req, res) => {
   try {
     const posts = readJson('./data/posts.json');
@@ -87,13 +87,13 @@ app.post('/posts', (req, res) => {
   }
 });
 
-// pour modifier un article qui existe déjà
+// modifier un article qui existe déjà
 app.patch('/posts/:id', (req, res) => {
   try {
     const posts = readJson('./data/posts.json');
     const post = posts.find(p => p.id === parseInt(req.params.id));
     if (post) {
-      Object.assign(post, req.body); // Mise à jour de l'article avec les nouvelles données
+      Object.assign(post, req.body);
       writeJson('./data/posts.json', posts);
       res.json(post);
     } else {
@@ -104,7 +104,7 @@ app.patch('/posts/:id', (req, res) => {
   }
 });
 
-// pour supprimer un article
+//  supprimer un article
 app.delete('/posts/:id', (req, res) => {
   try {
     let posts = readJson('./data/posts.json');
@@ -116,7 +116,7 @@ app.delete('/posts/:id', (req, res) => {
   }
 });
 
-// pour lister les commentaires d'un article
+//  lister les commentaires d'un article
 app.get('/posts/:id/comments', (req, res) => {
   try {
     const comments = readJson('./data/comments.json');
@@ -127,11 +127,11 @@ app.get('/posts/:id/comments', (req, res) => {
   }
 });
 
-// pour ajouter un commentaire
+// ajouter un commentaire
 app.post('/posts/:id/comments', (req, res) => {
   try {
     const comments = readJson('./data/comments.json');
-    const newComment = { ...req.body, postId: parseInt(req.params.id) };  // Ajoute l'ID de l'article
+    const newComment = { ...req.body, postId: parseInt(req.params.id) };  // ajoute ID de l'article
     comments.push(newComment);
     writeJson('./data/comments.json', comments);
     res.status(201).json(newComment);
@@ -140,7 +140,7 @@ app.post('/posts/:id/comments', (req, res) => {
   }
 });
 
-// pour supprimer un commentaire
+//  supprimer un commentaire
 app.delete('/comments/:id', (req, res) => {
   try {
     let comments = readJson('./data/comments.json');
