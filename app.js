@@ -1,29 +1,27 @@
-const express = require('express');
-const fs = require('fs');
-const app1 = express();
+// const express = require('express');
+// const fs = require('fs');
+// const app1 = express();
 
-app.use(express.json());
+// app.use(express.json());
 
 // Fonctions utilitaires  lire/écrire des fichiers JSON 
 
+
 // Test de démarrage
-app.get('/', (req, res) => {
-  res.send('Bienvenue sur l’API du mini-blog !');
-});
+// app.get('/', (req, res) => {
+//   res.send('Bienvenue sur l’API du mini-blog !');
+// });
 
 // Routes à compléter ici
 
 // Lancement du serveur
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Serveur lancé sur http://localhost:${PORT}`);
-});
+
 
 
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const app = express();
-const port = 3000;
 
 // Middleware  parser le corps des requêtes en JSON
 app.use(express.json());
@@ -37,6 +35,7 @@ const readJson = (path) => {
 const writeJson = (path, data) => {
   fs.writeFileSync(path, JSON.stringify(data, null, 2));
 };
+
 
 // Fonction  afficher le contenu d'un fichier JSON dans la console
 const afficherFichier = (chemin) => {
@@ -61,18 +60,27 @@ app.get('/posts', (req, res) => {
 
 //  afficher un article au choix
 app.get('/posts/:id', (req, res) => {
-  try {
-    const posts = readJson('./data/posts.json');
-    const post = posts.find(p => p.id === parseInt(req.params.id));
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404).send('Article non trouvé');
-    }
-  } catch (err) {
-    next(err);
+  const id = parseInt(req.params.id);
+  const pathPost = './data/posts.json';
+  const posts = readJson(pathPost);
+  const post = posts.find(p => p.id === id)
+  if (!post) {
+    res.status(404).send('Non trouve');
+    res.json(post);
   }
 });
+// try {
+//   const posts = readJson('./data/posts.json');
+//   const post = posts.find(p => p.id === parseInt(req.params.id));
+//   if (post) {
+//     res.json(post);
+//   } else {
+//     res.status(404).send('Article non trouvé');
+//   }
+// } catch (err) {
+//   next(err);
+// }
+
 
 //  créer un nouvel article
 app.post('/posts', (req, res) => {
@@ -106,14 +114,19 @@ app.patch('/posts/:id', (req, res) => {
 
 //  supprimer un article
 app.delete('/posts/:id', (req, res) => {
-  try {
-    let posts = readJson('./data/posts.json');
-    posts = posts.filter(p => p.id !== parseInt(req.params.id));
-    writeJson('./data/posts.json', posts);
-    res.status(204).send();
-  } catch (err) {
-    next(err);
-  }
+
+  const id = parseInt(req.params.id);
+  const posts = readJson('./data/posts.json');
+  posts.filter(p => p.id !== id);
+  writeJson('./data/posts.json', posts);
+  // try {
+  //   let posts = readJson('./data/posts.json');
+  //   posts = posts.filter(p => p.id !== parseInt(req.params.id));
+  //   writeJson('./data/posts.json', posts);
+  //   res.status(204).send();
+  // } catch (err) {
+  //   next(err);
+  // }
 });
 
 //  lister les commentaires d'un article
@@ -158,7 +171,13 @@ app.use((err, req, res, next) => {
   res.status(500).send('Quelque chose a mal tourné!');
 });
 
-// Démarrage du serveur
-app.listen(port, () => {
-  console.log(`Serveur démarré sur http://localhost:${port}`);
+// // Démarrage du serveur
+// app.listen(port, () => {
+//   console.log(`Serveur démarré sur http://localhost:${port}`);
+// });
+
+// Lancement du serveur
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });
