@@ -8,6 +8,7 @@
   },
   "repository": {
     "type": "git",
+<<<<<<< HEAD
     "url": "git+https://github.com/dessna12/Parcours-BlogApi.git"
   },
   "author": "",
@@ -16,6 +17,17 @@
     "url": "https://github.com/dessna12/Parcours-BlogApi/issues"
   },
   "homepage": "https://github.com/dessna12/Parcours-BlogApi#readme",
+=======
+    "url": "git+https://github.com/Ilonati/Parcours-BlogApi-1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ilonati/Parcours-BlogApi-1/issues"
+  },
+  "homepage": "https://github.com/Ilonati/Parcours-BlogApi-1#readme",
+>>>>>>> 1f643977b31daded027ae021a82c47bf5f8188d7
   "dependencies": {
     "express": "^5.1.0"
   }
